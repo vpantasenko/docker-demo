@@ -36,8 +36,12 @@ class Database {
         return await this.getCollection(collection).find(query).toArray();
     }
 
+    async findOne(collection, query = {}) {
+        return await this.getCollection(collection).findOne(query);;
+    }
+
     async findById(collection, id) {
-        return await this.find(collection, { _id: ObjectID(id) });
+        return await this.findOne(collection, { _id: ObjectID(id) });
     }
 
     async findAll(collection) {
@@ -55,13 +59,9 @@ class Database {
     }
 
     async deleteById(collection, id) {
-        const records = await this.findById(collection, id);
-        if (records.length) {
-            await this.getCollection(collection).deleteOne({
-                _id: ObjectID(id)
-            });
-            return records[0];
-        }
+        return await this.getCollection(collection).deleteOne({
+            _id: ObjectID(id)
+        });
     }
 }
 

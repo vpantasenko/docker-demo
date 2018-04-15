@@ -46,6 +46,11 @@ router.post('/users', async (ctx, next) => {
 });
 
 router.delete('/users/:id', async (ctx, next) => {
-    ctx.body = await database.deleteById('users', ctx.params.id);
+    const userId = ctx.params.id;
+    const user = await database.findById('users', userId);
+    if (user) {
+        await database.deleteById('users', userId);
+        ctx.body = user;
+    }
     next();
 });
