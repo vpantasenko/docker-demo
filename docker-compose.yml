@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  ui:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    command: yarn start
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./ui:/app
+      - ui-deps:/app/node_modules
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    command: yarn start:dev
+    ports:
+      - '9000:9000'
+      - '9229:9229'
+    volumes:
+      - ./api:/app
+      - api-deps:/app/node_modules
+    links:
+      - db:mongodb
+  db:
+    image: mongo:3.6.2
+    volumes:
+      - ./db/db:/data/db
+
+volumes:
+  ui-deps:
+  api-deps:
