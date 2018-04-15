@@ -30,23 +30,29 @@ export class Users extends Component {
     createUser(newUser) {
         return api.create('users', newUser)
             .then((user) => {
-                this.setState({
-                    users: [ ...this.state.users, user ]
-                });
-                return user;
+                this.addUserToList(user);
             });
     }
 
     removeUser(userId) {
         return api.remove('users', userId)
             .then((removedUser) => {
-                const { users } = this.state;
-                const index = users.findIndex(({ _id }) => _id === userId);
-                const usersCopy = [ ...users ];
-                usersCopy.splice(index, 1);
-                this.setState({ users: usersCopy });
-                return removedUser;
+                this.removeUserFromList(userId);
             });
+    }
+
+    addUserToList(user) {
+        this.setState({
+            users: [ ...this.state.users, user ]
+        });
+    }
+
+    removeUserFromList(userId) {
+        const { users } = this.state;
+        const index = users.findIndex(({ _id }) => _id === userId);
+        const usersCopy = [ ...users ];
+        usersCopy.splice(index, 1);
+        this.setState({ users: usersCopy });
     }
 
     sort(users) {
