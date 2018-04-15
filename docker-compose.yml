@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  ui:
+  ui-dev:
     build:
       context: ./ui
       dockerfile: Dockerfile
@@ -11,7 +11,7 @@ services:
     volumes:
       - ./ui:/app
       - ui-deps:/app/node_modules
-  api:
+  api-dev:
     build:
       context: ./api
       dockerfile: Dockerfile
@@ -23,8 +23,8 @@ services:
       - ./api:/app
       - api-deps:/app/node_modules
     links:
-      - db:mongodb
-  db:
+      - db-dev:mongodb
+  db-dev:
     image: mongo:3.6.2
     volumes:
       - ./db/db:/data/db
